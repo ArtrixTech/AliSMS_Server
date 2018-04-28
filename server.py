@@ -1,14 +1,24 @@
-
-import json
 import uuid
 from mns.demo_sms_send import send_sms
 
-def load_cfg():
-    cfg=json.load("mns_cfg.json")
-    return cfg["akid"],cfg["aksec"],cfg["end_point"]
+from flask import Flask
 
-accid,acckey,endpoint=load_cfg()
-__business_id = uuid.uuid1()
+app = Flask(__name__)
 
-params = "{\"name\":\"12345\"}"
-print(send_sms(__business_id, "13632968596", "Artrix雅智科技", "SMS_44350355", params))
+
+@app.route('/sendsms/<template>/<phone>/<content>')
+def hello_world(template, phone, content):
+    __business_id = uuid.uuid1()
+
+    if not "SMS" in template:
+        template = "SMS_44350355"
+
+    params = "{\"name\":\"" + content + "\"}"
+    res = send_sms(__business_id, phone, "Artrix雅智科技", template, params)
+
+    print(res.decode())
+    return res.decode()
+
+
+if __name__ == '__main__':
+    app.run(port=46338)
