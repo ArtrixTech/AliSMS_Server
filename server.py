@@ -21,4 +21,5 @@ def hello_world(template, phone, content):
 
 
 if __name__ == '__main__':
-    app.run(port=46338)
+    # app.run(port=46338)
+    app.run(host="199.247.2.136", port=46338)
